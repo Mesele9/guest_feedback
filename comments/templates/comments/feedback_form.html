@@ -1,0 +1,140 @@
+{% extends "comments/base.html" %}
+{% load static %}
+
+{% block title %}Guest Feedback Form{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card mt-5">
+        <div class="card-header bg-primary text-white">
+            <h1 class="card-title mb-0">Hotel Guest Feedback Form</h1>
+            <p class="card-subtitle mt-2">Please help us improve by sharing your experience</p>
+        </div>
+        
+        <div class="card-body">
+            <form method="post" class="needs-validation" novalidate>
+                {% csrf_token %}
+                
+                <!-- Personal Information -->
+                <div class="form-section mb-5">
+                    <h2 class="h4 mb-4 border-bottom pb-2">Your Information</h2>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">{{ form.name.label }}</label>
+                            {{ form.name }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">{{ form.contact_no.label }}</label>
+                            {{ form.contact_no }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">{{ form.email.label }}</label>
+                            {{ form.email }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">{{ form.date_of_stay.label }}</label>
+                            {{ form.date_of_stay }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- First Impression -->
+                <div class="form-section mb-5">
+                    <h2 class="h4 mb-4 border-bottom pb-2">First Impression</h2>
+                    {% include "comments/rating_section.html" with field=form.welcome_rating %}
+                    {% include "comments/rating_section.html" with field=form.reception_rating %}
+                    {% include "comments/rating_section.html" with field=form.hotel_cleanliness %}
+                </div>
+
+                <!-- Room Experience -->
+                <div class="form-section mb-5">
+                    <h2 class="h4 mb-4 border-bottom pb-2">Room Experience</h2>
+                    {% include "comments/rating_section.html" with field=form.room_cleanliness %}
+                    {% include "comments/rating_section.html" with field=form.amenities_rating %}
+                    {% include "comments/rating_section.html" with field=form.room_service %}
+                    {% include "comments/rating_section.html" with field=form.housekeeping %}
+                </div>
+
+                <!-- Restaurant/Bar Experience -->
+                <div class="form-section mb-5">
+                    <h2 class="h4 mb-4 border-bottom pb-2">Restaurant & Bar Experience</h2>
+                    {% include "comments/rating_section.html" with field=form.restaurant_ambience %}
+                    {% include "comments/rating_section.html" with field=form.waiting_team %}
+                    {% include "comments/rating_section.html" with field=form.complaint_response %}
+                    {% include "comments/rating_section.html" with field=form.food_presentation %}
+                    {% include "comments/rating_section.html" with field=form.restaurant_setup %}
+                    {% include "comments/rating_section.html" with field=form.toilet_cleanliness %}
+                </div>
+
+                <!-- Ordering Experience -->
+                <div class="form-section mb-5">
+                    <h2 class="h4 mb-4 border-bottom pb-2">Ordering Experience</h2>
+                    {% include "comments/rating_section.html" with field=form.staff_recommendation %}
+                    {% include "comments/rating_section.html" with field=form.waiting_time %}
+                    {% include "comments/rating_section.html" with field=form.food_temperature %}
+                    {% include "comments/rating_section.html" with field=form.value_money %}
+                    {% include "comments/rating_section.html" with field=form.portion_size %}
+                </div>
+
+                <!-- Additional Information -->
+                <div class="form-section mb-5">
+                    <h2 class="h4 mb-4 border-bottom pb-2">Additional Information</h2>
+                    <div class="mb-4">
+                        <label class="form-label">{{ form.exceptional_employee.label }}</label>
+                        {{ form.exceptional_employee }}
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label">{{ form.additional_comments.label }}</label>
+                        {{ form.additional_comments }}
+                    </div>
+                </div>
+
+                <div class="text-center mt-5">
+                    <button type="submit" class="btn btn-primary btn-lg px-5 py-3">
+                        Submit Your Feedback
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+.form-section {
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    background: #f8f9fa;
+    margin-bottom: 2rem;
+    border: 1px solid #dee2e6;
+}
+
+.rating-group {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.form-check-inline {
+    margin-right: 0;
+    padding: 0.5rem 1rem;
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    background: white;
+    transition: all 0.2s;
+}
+
+.form-check-input:checked + .form-check-label {
+    font-weight: 600;
+    color: #0d6efd;
+}
+
+.form-check-input:focus {
+    box-shadow: none;
+}
+
+.form-check-input:checked {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+</style>
+{% endblock %}
