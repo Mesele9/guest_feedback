@@ -26,10 +26,17 @@
                     <div class="card text-white bg-info h-100">
                         <div class="card-body">
                             <h5 class="card-title">Avg. Overall Rating</h5>
-                            <p class="display-4">{{ avg_ratings.overall|floatformat:1 }}</p>
+                            <p class="display-4">
+                                {% if avg_ratings.overall %}
+                                    {{ avg_ratings.overall|floatformat:1 }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </p>
                         </div>
                     </div>
                 </div>
+
                 
                 <div class="col-md-3">
                     <div class="card text-white bg-warning h-100">

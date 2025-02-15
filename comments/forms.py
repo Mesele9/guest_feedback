@@ -1,4 +1,3 @@
-# comments/forms.py
 from django import forms
 from .models import GuestFeedback
 
@@ -11,9 +10,9 @@ class FeedbackForm(forms.ModelForm):
         widgets = {
             'date_of_stay': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'additional_comments': forms.Textarea(attrs={'rows': 4, 'class': 'form-control'}),
-            'address': forms.Textarea(attrs={'rows': 3, 'class': 'form-control'}),
             'exceptional_employee': forms.TextInput(attrs={'class': 'form-control'}),
         }
+        
         labels = {
             # Personal Information
             'name': 'Your Full Name',
@@ -51,6 +50,31 @@ class FeedbackForm(forms.ModelForm):
             'additional_comments': 'Your Additional Comments',
             'exceptional_employee': 'Exceptional Staff Member (if any)',
         }
+        
+        error_messages = {
+            'name': {'required': "Please enter your full name"},
+            'contact_no': {'required': "Please provide a contact number"},
+            'email': {'required': "Please provide your email address"},
+            'date_of_stay': {'required': "Please select your stay date"},
+            'welcome_rating': {'required': "Please rate your welcome experience"},
+            'reception_rating': {'required': "Please rate the reception experience"},
+            'hotel_cleanliness': {'required': "Please rate hotel cleanliness"},
+            'room_cleanliness': {'required': "Please rate room cleanliness"},
+            'amenities_rating': {'required': "Please rate room amenities"},
+            'room_service': {'required': "Please rate room service"},
+            'housekeeping': {'required': "Please rate housekeeping service"},
+            'restaurant_ambience': {'required': "Please rate restaurant ambience"},
+            'waiting_team': {'required': "Please rate waiting team service"},
+            'complaint_response': {'required': "Please rate complaint response"},
+            'food_presentation': {'required': "Please rate food presentation"},
+            'restaurant_setup': {'required': "Please rate restaurant setup"},
+            'toilet_cleanliness': {'required': "Please rate restroom cleanliness"},
+            'staff_recommendation': {'required': "Please rate staff recommendations"},
+            'waiting_time': {'required': "Please rate order waiting time"},
+            'food_temperature': {'required': "Please rate food temperature"},
+            'value_money': {'required': "Please rate value for money"},
+            'portion_size': {'required': "Please rate portion size"},
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -60,7 +84,10 @@ class FeedbackForm(forms.ModelForm):
                     choices=RATING_CHOICES,
                     attrs={'class': 'form-check-input'}
                 )
-                # Add help text for rating fields
-                self.fields[field].help_text = "1 = Poor, 5 = Excellent"
+                self.fields[field].error_messages = {
+                    'required': f'Please provide rating for {self.fields[field].label.split(" Rating")[0].lower()}'
+                }
             else:
                 self.fields[field].widget.attrs.update({'class': 'form-control'})
+                if self.fields[field].required:
+                    self.fields[field].widget.attrs['required'] = 'required'

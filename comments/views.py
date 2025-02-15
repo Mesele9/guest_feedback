@@ -7,15 +7,18 @@ from django.db.models import Count
 
 
 def feedback_view(request):
-    """Handle feedback form submission"""
     if request.method == 'POST':
         form = FeedbackForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('success')
+        else:
+            # Return form with errors
+            return render(request, 'comments/feedback_form.html', {'form': form})
     else:
         form = FeedbackForm()
     return render(request, 'comments/feedback_form.html', {'form': form})
+
 
 def success_view(request):
     """Display success page after form submission"""
@@ -46,6 +49,11 @@ def feedback_dashboard(request):
         'value_money': feedbacks.aggregate(Avg('value_money'))['value_money__avg'],
         'portion_size': feedbacks.aggregate(Avg('portion_size'))['portion_size__avg'],
     }
+
+        # Calculate overall average manually
+    overall_ratings = [fb.overall_rating for fb in feedbacks if fb.overall_rating is not None]
+    avg_ratings['overall'] = sum(overall_ratings)/len(overall_ratings) if overall_ratings else 0
+
 
     # Add additional statistics
     context = {

@@ -93,10 +93,35 @@ class GuestFeedback(models.Model):
             cls=DjangoJSONEncoder
         )
 
-    @property
+    '''@property
     def overall_rating(self):
         ratings = self.get_all_ratings_json().values()
         return round(sum(ratings) / len(ratings), 1)
+    '''
+    @property
+    def overall_rating(self):
+        ratings = [
+            self.welcome_rating,
+            self.reception_rating,
+            self.hotel_cleanliness,
+            self.room_cleanliness,
+            self.amenities_rating,
+            self.room_service,
+            self.housekeeping,
+            self.restaurant_ambience,
+            self.waiting_team,
+            self.complaint_response,
+            self.food_presentation,
+            self.restaurant_setup,
+            self.toilet_cleanliness,
+            self.staff_recommendation,
+            self.waiting_time,
+            self.food_temperature,
+            self.value_money,
+            self.portion_size,
+        ]
+        valid_ratings = [r for r in ratings if r is not None]
+        return round(sum(valid_ratings)/len(valid_ratings), 1) if valid_ratings else 0
 
     def __str__(self):
         return f"{self.name} - {self.date_of_stay}"
